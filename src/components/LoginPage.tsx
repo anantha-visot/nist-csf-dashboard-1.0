@@ -1,5 +1,7 @@
 import { Shield, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../auth/useAuth';
+import AnsamcalLogo from './logos/AnsamcalLogo';
+import PrecisionCyberLogo from './logos/PrecisionCyberLogo';
 
 function MicrosoftLogo() {
   return (
@@ -30,6 +32,7 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
       />
 
       <div className="relative w-full max-w-md">
+        {/* Shield icon */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-500/15 border border-indigo-500/25 shadow-lg shadow-indigo-500/10">
             <Shield className="w-8 h-8 text-indigo-400" />
@@ -76,9 +79,11 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               </p>
             </div>
 
-            {/* Ansamcal sign-in */}
+            {/* Ansamcal sign-in card */}
             <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Ansamcal</p>
+              <div className="flex items-center justify-center bg-white rounded-lg px-4 py-3 mb-3">
+                <AnsamcalLogo className="h-10 w-auto" />
+              </div>
               <button
                 onClick={signInAnsamcal}
                 disabled={isLoading}
@@ -89,9 +94,11 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               </button>
             </div>
 
-            {/* PCDS sign-in */}
+            {/* PCDS sign-in card */}
             <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Precision Cyber / PCDS</p>
+              <div className="flex items-center justify-center bg-white rounded-lg px-4 py-3 mb-3">
+                <PrecisionCyberLogo className="h-10 w-auto" />
+              </div>
               <button
                 onClick={signInPcds}
                 disabled={isLoading}
