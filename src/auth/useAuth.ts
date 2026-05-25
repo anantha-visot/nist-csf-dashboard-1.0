@@ -10,9 +10,9 @@ export function useAuth() {
 
   useEffect(() => {
     const id = instance.addEventCallback((event) => {
-      if (event.eventType === EventType.LOGIN_FAILURE) {
+      if (event.eventType === EventType.ACQUIRE_TOKEN_FAILURE) {
         const msg = (event.error as Error)?.message ?? 'Sign-in failed. Please try again.';
-        console.error('[MSAL] LOGIN_FAILURE', event.error);
+        console.error('[MSAL] ACQUIRE_TOKEN_FAILURE', event.error);
         setAuthError(msg);
       }
       if (event.eventType === EventType.LOGIN_SUCCESS) {
