@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="ANSA McAL Group of Companies">
+  <!-- Yellow circle -->
+  <circle cx="80" cy="80" r="78" fill="#F5C200"/>
+  <circle cx="80" cy="80" r="68" fill="none" stroke="#E8B400" stroke-width="2"/>
+
+  <!-- AM monogram inside circle -->
+  <!-- A -->
+  <path d="M38 110 L58 42 L80 95 L102 42 L122 110" stroke="#1B3A8C" stroke-width="9" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+  <line x1="52" y1="88" x2="108" y2="88" stroke="#1B3A8C" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- ansa McAL text -->
+  <text x="178" y="88"
+    font-family="'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="900"
+    font-size="72"
+    font-style="italic"
+    fill="#1B3A8C"
+    letter-spacing="-1">ansa M<tspan font-size="66">c</tspan>AL</text>
+
+  <!-- GROUP OF COMPANIES -->
+  <text x="180" y="128"
+    font-family="'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="400"
+    font-size="22"
+    fill="#1B3A8C"
+    letter-spacing="4.5">GROUP OF COMPANIES</text>
+</svg>

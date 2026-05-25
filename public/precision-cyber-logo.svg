@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" role="img" aria-label="Precision Cybertechnologies and Digital Solutions Ltd">
+  <!-- "precision" bold text -->
+  <text x="0" y="82"
+    font-family="'Arial Black', 'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="900"
+    font-size="88"
+    fill="#1A1A1A">precision</text>
+
+  <!-- Double chevron arrow icon (blue + orange) -->
+  <!-- Blue left chevron shape -->
+  <polygon points="376,8  406,8  446,65  406,122  376,122  416,65" fill="#1255A3"/>
+  <!-- Orange right chevron (overlapping) -->
+  <polygon points="406,8  436,8  476,65  436,122  406,122  446,65" fill="#F4821F"/>
+
+  <!-- CYBERTECHNOLOGIES &amp; DIGITAL SOLUTIONS, LTD -->
+  <text x="2" y="116"
+    font-family="'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="400"
+    font-size="19"
+    fill="#555555"
+    letter-spacing="1.2">CYBERTECHNOLOGIES &amp; DIGITAL SOLUTIONS, LTD</text>
+</svg>
