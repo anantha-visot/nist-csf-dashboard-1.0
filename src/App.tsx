@@ -1,9 +1,11 @@
 import { Shield, AlertCircle } from 'lucide-react';
 import { useData } from './hooks/useData';
+import { useAuth } from './auth/useAuth';
 import Header from './components/Header';
 import SummaryCards from './components/SummaryCards';
 import TierDistributionChart from './components/TierDistributionChart';
 import FunctionSection from './components/FunctionSection';
+import LoginPage from './components/LoginPage';
 
 function LoadingScreen() {
   return (
@@ -31,7 +33,7 @@ function ErrorScreen({ message }: { message: string }) {
   );
 }
 
-export default function App() {
+function Dashboard() {
   const { data, loading, error } = useData();
 
   if (loading) return <LoadingScreen />;
@@ -77,4 +79,14 @@ export default function App() {
       </main>
     </div>
   );
+}
+
+export default function App() {
+  const { isAuthenticated, isAuthorized, isLoading, email } = useAuth();
+
+  if (isLoading) return <LoadingScreen />;
+  if (!isAuthenticated) return <LoginPage />;
+  if (!isAuthorized) return <LoginPage unauthorizedEmail={email} />;
+
+  return <Dashboard />;
 }
