@@ -1,7 +1,6 @@
 import { Shield, Lock, Building2, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../auth/useAuth';
 
-// Microsoft "M" logo as inline SVG — no external dependency needed
 function MicrosoftLogo() {
   return (
     <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,11 +17,10 @@ interface Props {
 }
 
 export default function LoginPage({ unauthorizedEmail }: Props) {
-  const { signIn, isLoading } = useAuth();
+  const { signIn, isLoading, authError } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center px-4">
-      {/* Background grid */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
@@ -32,24 +30,32 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
       />
 
       <div className="relative w-full max-w-md">
-        {/* Logo mark */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-500/15 border border-indigo-500/25 shadow-lg shadow-indigo-500/10">
             <Shield className="w-8 h-8 text-indigo-400" />
           </div>
         </div>
 
-        {/* Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Card header */}
           <div className="px-8 pt-8 pb-6 border-b border-slate-800 text-center">
             <h1 className="text-xl font-semibold text-white mb-1">NIST CSF 2.0 Dashboard</h1>
             <p className="text-sm text-slate-400">Cybersecurity Assessment Portal</p>
           </div>
 
           <div className="px-8 py-8">
-            {/* Unauthorized domain warning */}
-            {unauthorizedEmail && (
+            {/* MSAL error (e.g. misconfigured app, consent denied) */}
+            {authError && (
+              <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4 mb-6">
+                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-red-300">Authentication error</p>
+                  <p className="text-xs text-red-400/80 mt-0.5 font-mono break-all">{authError}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Unauthorized domain */}
+            {!authError && unauthorizedEmail && (
               <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4 mb-6">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div>
@@ -61,7 +67,6 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               </div>
             )}
 
-            {/* Lock icon + copy */}
             <div className="flex items-start gap-3 mb-7">
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex-shrink-0 mt-0.5">
                 <Lock className="w-4 h-4 text-slate-400" />
@@ -72,7 +77,6 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               </p>
             </div>
 
-            {/* Sign-in button */}
             <button
               onClick={signIn}
               disabled={isLoading}
@@ -86,7 +90,6 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               {isLoading ? 'Redirecting…' : 'Sign in with Microsoft'}
             </button>
 
-            {/* Allowed domains */}
             <div className="mt-6 rounded-xl border border-slate-800 bg-slate-800/40 p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Building2 className="w-3.5 h-3.5 text-slate-500" />
