@@ -1,9 +1,9 @@
-import { Shield, Lock, Building2, AlertCircle, Loader2 } from 'lucide-react';
+import { Shield, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../auth/useAuth';
 
 function MicrosoftLogo() {
   return (
-    <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="1" y="1" width="9" height="9" fill="#F25022" />
       <rect x="11" y="1" width="9" height="9" fill="#7FBA00" />
       <rect x="1" y="11" width="9" height="9" fill="#00A4EF" />
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function LoginPage({ unauthorizedEmail }: Props) {
-  const { signIn, isLoading, authError } = useAuth();
+  const { signInAnsamcal, signInPcds, isLoading, authError } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center px-4">
@@ -42,10 +42,10 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
             <p className="text-sm text-slate-400">Cybersecurity Assessment Portal</p>
           </div>
 
-          <div className="px-8 py-8">
-            {/* MSAL error (e.g. misconfigured app, consent denied) */}
+          <div className="px-8 py-8 space-y-4">
+            {/* MSAL error */}
             {authError && (
-              <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4 mb-6">
+              <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-red-300">Authentication error</p>
@@ -56,7 +56,7 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
 
             {/* Unauthorized domain */}
             {!authError && unauthorizedEmail && (
-              <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4 mb-6">
+              <div className="flex items-start gap-3 rounded-lg border border-red-500/25 bg-red-500/10 p-4">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-red-300">Access denied</p>
@@ -67,44 +67,39 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
               </div>
             )}
 
-            <div className="flex items-start gap-3 mb-7">
+            <div className="flex items-start gap-3">
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex-shrink-0 mt-0.5">
                 <Lock className="w-4 h-4 text-slate-400" />
               </div>
               <p className="text-sm text-slate-400 leading-relaxed">
-                This dashboard is restricted to authorised personnel. Sign in with your
-                Microsoft 365 work account to continue.
+                Sign in with your Microsoft 365 work account. Select your organisation below.
               </p>
             </div>
 
-            <button
-              onClick={signIn}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-900 font-semibold text-sm px-5 py-3 rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin text-slate-600" />
-              ) : (
-                <MicrosoftLogo />
-              )}
-              {isLoading ? 'Redirecting…' : 'Sign in with Microsoft'}
-            </button>
+            {/* Ansamcal sign-in */}
+            <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Ansamcal</p>
+              <button
+                onClick={signInAnsamcal}
+                disabled={isLoading}
+                className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+              >
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-slate-600" /> : <MicrosoftLogo />}
+                {isLoading ? 'Redirecting…' : 'Sign in with Microsoft'}
+              </button>
+            </div>
 
-            <div className="mt-6 rounded-xl border border-slate-800 bg-slate-800/40 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Building2 className="w-3.5 h-3.5 text-slate-500" />
-                <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">
-                  Authorised organisations
-                </span>
-              </div>
-              <div className="space-y-2">
-                {['precision-cyber.com', 'ansamcal.com'].map((d) => (
-                  <div key={d} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-emerald-500" />
-                    <span className="text-xs font-mono text-slate-300">{d}</span>
-                  </div>
-                ))}
-              </div>
+            {/* PCDS sign-in */}
+            <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Precision Cyber / PCDS</p>
+              <button
+                onClick={signInPcds}
+                disabled={isLoading}
+                className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+              >
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-slate-600" /> : <MicrosoftLogo />}
+                {isLoading ? 'Redirecting…' : 'Sign in with Microsoft'}
+              </button>
             </div>
           </div>
         </div>

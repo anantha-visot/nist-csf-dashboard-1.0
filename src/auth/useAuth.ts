@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import { InteractionStatus, EventType } from '@azure/msal-browser';
-import { loginRequest, ALLOWED_DOMAINS } from './msalConfig';
+import { InteractionStatus, EventType, PublicClientApplication } from '@azure/msal-browser';
+import { loginRequest, ALLOWED_DOMAINS, msalConfigPcds, TENANT_KEY } from './msalConfig';
 
 export function useAuth() {
   const { instance, accounts, inProgress } = useMsal();
@@ -28,12 +28,23 @@ export function useAuth() {
   const domain = email.split('@')[1]?.toLowerCase() ?? '';
   const isDomainAllowed = ALLOWED_DOMAINS.includes(domain);
 
-  const signIn = () => {
+  const signInAnsamcal = () => {
     setAuthError(null);
+    localStorage.setItem(TENANT_KEY, 'ansamcal');
     instance.loginRedirect(loginRequest);
   };
 
+  const signInPcds = () => {
+    setAuthError(null);
+    localStorage.setItem(TENANT_KEY, 'pcds');
+    // Spin up a temporary PCDS instance just to initiate the redirect.
+    // On return, main.tsx reads the TENANT_KEY and creates the matching instance.
+    const pcdsInstance = new PublicClientApplication(msalConfigPcds);
+    pcdsInstance.initialize().then(() => pcdsInstance.loginRedirect(loginRequest));
+  };
+
   const signOut = () => {
+    localStorage.removeItem(TENANT_KEY);
     instance.logoutRedirect({
       account,
       postLogoutRedirectUri: 'https://nist-csf-ansa.netlify.app',
@@ -50,7 +61,8 @@ export function useAuth() {
     domain,
     isDomainAllowed,
     authError,
-    signIn,
+    signInAnsamcal,
+    signInPcds,
     signOut,
   };
 }
