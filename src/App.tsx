@@ -6,8 +6,6 @@ import SummaryCards from './components/SummaryCards';
 import TierDistributionChart from './components/TierDistributionChart';
 import FunctionSection from './components/FunctionSection';
 import LoginPage from './components/LoginPage';
-import AnsamcalLogo from './components/logos/AnsamcalLogo';
-import PrecisionCyberLogo from './components/logos/PrecisionCyberLogo';
 
 function LoadingScreen() {
   return (
@@ -55,17 +53,6 @@ function Dashboard() {
         {/* Stacked tier chart */}
         <section>
           <TierDistributionChart functions={data.functions} />
-        </section>
-
-        {/* Partner logos — centred between chart and function breakdowns */}
-        <section className="flex items-center justify-center gap-8 py-2">
-          <div className="bg-white rounded-xl px-6 py-3 shadow-sm flex items-center">
-            <AnsamcalLogo className="h-12 w-auto" />
-          </div>
-          <div className="w-px h-12 bg-slate-700" />
-          <div className="bg-white rounded-xl px-6 py-3 shadow-sm flex items-center">
-            <PrecisionCyberLogo className="h-12 w-auto" />
-          </div>
         </section>
 
         {/* Function breakdowns */}
