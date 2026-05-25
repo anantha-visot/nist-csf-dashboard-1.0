@@ -19,7 +19,7 @@ export function useAuth() {
   const signOut = () => {
     instance.logoutRedirect({
       account,
-      postLogoutRedirectUri: 'https://nist-csf.netlify.app',
+      postLogoutRedirectUri: 'https://nist-csf-ansa.netlify.app',
     });
   };
 
