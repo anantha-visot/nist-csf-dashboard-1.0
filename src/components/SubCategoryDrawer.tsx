@@ -1,4 +1,4 @@
-import { X, FileText, Eye, Wrench, Code2, ShieldCheck, Target, MessageSquare } from 'lucide-react';
+import { X, FileText, Eye, Wrench, Code2, ShieldCheck, MessageSquare } from 'lucide-react';
 import type { SubCategory } from '../hooks/useData';
 import { TIER_COLORS, TIER_BG_CLASSES, getTierKey } from '../utils/tierUtils';
 
@@ -34,8 +34,6 @@ function SectionCard({ icon: Icon, title, content, borderColor, bgColor, iconCol
 
 export default function SubCategoryDrawer({ sub, onClose }: Props) {
   const currentKey = getTierKey(sub.currentTierScore);
-  const targetKey  = getTierKey(sub.targetTierScore);
-  const meetsTarget = !sub.isBelowTarget;
 
   const sections: SectionConfig[] = [
     {
@@ -84,15 +82,6 @@ export default function SubCategoryDrawer({ sub, onClose }: Props) {
       labelColor: 'text-purple-300',
     },
     {
-      icon: Target,
-      title: 'Target Tier Comments',
-      content: sub.targetTierComments,
-      borderColor: 'border-amber-500/30',
-      bgColor: 'bg-amber-500/[0.07]',
-      iconColor: 'text-amber-400',
-      labelColor: 'text-amber-300',
-    },
-    {
       icon: MessageSquare,
       title: 'Client Comments',
       content: sub.clientComments,
@@ -132,45 +121,14 @@ export default function SubCategoryDrawer({ sub, onClose }: Props) {
             </button>
           </div>
 
-          {/* Implementation Tier row — names as headline, no numeric scores */}
-          <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-3">
-
-            {/* Current Implementation Tier */}
-            <div className={`rounded-lg border p-3 ${TIER_BG_CLASSES[currentKey]}`}>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
-                Current Implementation Tier
-              </p>
-              <p
-                className="text-base font-bold leading-tight"
-                style={{ color: TIER_COLORS[currentKey] }}
-              >
-                {sub.currentImplementationTier}
-              </p>
-            </div>
-
-            {/* Implementation status — no gap arithmetic */}
-            <div className="flex items-center justify-center">
-              <span className={`text-[11px] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap border
-                ${meetsTarget
-                  ? 'text-indigo-300 bg-indigo-500/10 border-indigo-500/25'
-                  : 'text-amber-300 bg-amber-500/10 border-amber-500/25'
-                }`}>
-                {meetsTarget ? '✓ Meets Target Tier' : '▷ Below Target Tier'}
-              </span>
-            </div>
-
-            {/* Target Implementation Tier */}
-            <div className={`rounded-lg border p-3 ${TIER_BG_CLASSES[targetKey]}`}>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
-                Target Implementation Tier
-              </p>
-              <p
-                className="text-base font-bold leading-tight"
-                style={{ color: TIER_COLORS[targetKey] }}
-              >
-                {sub.targetImplementationTier}
-              </p>
-            </div>
+          {/* Current Implementation Tier — single box, no target */}
+          <div className={`rounded-lg border p-3 ${TIER_BG_CLASSES[currentKey]}`}>
+            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              Current Implementation Tier
+            </p>
+            <p className="text-base font-bold leading-tight" style={{ color: TIER_COLORS[currentKey] }}>
+              {sub.currentImplementationTier}
+            </p>
           </div>
         </div>
 

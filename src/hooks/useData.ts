@@ -11,11 +11,7 @@ export interface SubCategory {
   currentTierScore: number;
   currentImplementationTier: string;
   recommendation: string;
-  targetImplementationTier: string;
-  targetTierScore: number;
-  targetTierComments: string;
   clientComments: string;
-  isBelowTarget: boolean;
 }
 
 export interface TierCounts {
@@ -30,7 +26,6 @@ export interface Category {
   name: string;
   subcategories: SubCategory[];
   tierCounts: TierCounts;
-  belowTargetCount: number;
 }
 
 export interface FunctionData {
@@ -38,15 +33,14 @@ export interface FunctionData {
   code: string;
   categories: Category[];
   tierCounts: TierCounts;
-  belowTargetCount: number;
   totalSubcategories: number;
 }
 
 export interface DashboardData {
   functions: FunctionData[];
   overallTierCounts: TierCounts;
-  overallBelowTargetCount: number;
   totalSubcategories: number;
+  totalCategories: number;
 }
 
 const FUNCTION_ORDER = ['Govern', 'Identify', 'Protect', 'Detect', 'Respond', 'Recover'];
@@ -80,30 +74,23 @@ export function useData() {
         const fnMap = new Map<string, Map<string, SubCategory[]>>();
 
         for (const r of rows) {
-          const fn = r['function'];
+          const fn      = r['function'];
           const catCode = r['category_code'];
           if (!fnMap.has(fn)) fnMap.set(fn, new Map());
           const catMap = fnMap.get(fn)!;
           if (!catMap.has(catCode)) catMap.set(catCode, []);
 
-          const currentScore = parseFloat(r['current_tier_score']) || 0;
-          const targetScore  = parseFloat(r['target_tier_score'])  || 0;
-
           catMap.get(catCode)!.push({
-            code: r['subcategory_code'],
-            description: r['subcategory_description'],
-            implementationExamples: r['implementation_examples'],
-            informativeReferences: r['informative_references'],
-            controlsChecks: r['controls_checks'],
+            code:                    r['subcategory_code'],
+            description:             r['subcategory_description'],
+            implementationExamples:  r['implementation_examples'],
+            informativeReferences:   r['informative_references'],
+            controlsChecks:          r['controls_checks'],
             understandingOfControls: r['Understanding_of_controls_Implemented'],
-            currentTierScore: currentScore,
+            currentTierScore:        parseFloat(r['current_tier_score']) || 0,
             currentImplementationTier: r['current_Implementation_tier'],
-            recommendation: r['recommendation'],
-            targetImplementationTier: r['target_Implementation_tier'],
-            targetTierScore: targetScore,
-            targetTierComments: r['target_tier_comments'],
-            clientComments: r['client_comments'],
-            isBelowTarget: currentScore < targetScore,
+            recommendation:          r['recommendation'],
+            clientComments:          r['client_comments'],
           });
         }
 
@@ -118,46 +105,32 @@ export function useData() {
 
           const categories: Category[] = Array.from(catMap.entries()).map(([code, subs]) => {
             const tierCounts = emptyTierCounts();
-            let belowTargetCount = 0;
             for (const s of subs) {
               const t = String(Math.round(s.currentTierScore)) as keyof TierCounts;
               if (tierCounts[t] !== undefined) tierCounts[t]++;
-              if (s.isBelowTarget) belowTargetCount++;
             }
-            return {
-              code,
-              name: catNameMap.get(code) ?? code,
-              subcategories: subs,
-              tierCounts,
-              belowTargetCount,
-            };
+            return { code, name: catNameMap.get(code) ?? code, subcategories: subs, tierCounts };
           });
 
           const fnTierCounts = categories.reduce(
             (acc, c) => addTierCounts(acc, c.tierCounts),
             emptyTierCounts()
           );
-          const fnBelowTarget = categories.reduce((s, c) => s + c.belowTargetCount, 0);
-          const fnTotal = categories.reduce((s, c) => s + c.subcategories.length, 0);
 
           return {
             name: fnName,
             code: fnCodeMap.get(fnName) ?? '',
             categories,
             tierCounts: fnTierCounts,
-            belowTargetCount: fnBelowTarget,
-            totalSubcategories: fnTotal,
+            totalSubcategories: categories.reduce((s, c) => s + c.subcategories.length, 0),
           };
         });
 
-        const overallTierCounts = functions.reduce(
-          (acc, f) => addTierCounts(acc, f.tierCounts),
-          emptyTierCounts()
-        );
-        const overallBelowTargetCount = functions.reduce((s, f) => s + f.belowTargetCount, 0);
-        const totalSubcategories = functions.reduce((s, f) => s + f.totalSubcategories, 0);
+        const overallTierCounts   = functions.reduce((acc, f) => addTierCounts(acc, f.tierCounts), emptyTierCounts());
+        const totalSubcategories  = functions.reduce((s, f) => s + f.totalSubcategories, 0);
+        const totalCategories     = functions.reduce((s, f) => s + f.categories.length, 0);
 
-        setData({ functions, overallTierCounts, overallBelowTargetCount, totalSubcategories });
+        setData({ functions, overallTierCounts, totalSubcategories, totalCategories });
         setLoading(false);
       })
       .catch(err => {

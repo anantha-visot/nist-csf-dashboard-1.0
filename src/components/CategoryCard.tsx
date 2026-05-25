@@ -39,7 +39,7 @@ export default function CategoryCard({ category, fnColor }: Props) {
     <>
       <div className="bg-slate-900/60 border border-slate-800 rounded-lg overflow-hidden">
 
-        {/* Category header row */}
+        {/* Category header */}
         <button
           onClick={() => setExpanded(e => !e)}
           className="w-full flex items-start gap-3 p-4 text-left hover:bg-slate-800/40 transition-colors"
@@ -58,11 +58,6 @@ export default function CategoryCard({ category, fnColor }: Props) {
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-white mb-2">{category.name}</p>
             <TierPills tierCounts={category.tierCounts} />
-            {category.belowTargetCount > 0 && (
-              <p className="text-[11px] text-amber-400/80 mt-1.5">
-                {category.belowTargetCount} subcategor{category.belowTargetCount === 1 ? 'y' : 'ies'} below target tier
-              </p>
-            )}
           </div>
 
           <div className="flex-shrink-0 mt-0.5">
@@ -86,17 +81,10 @@ export default function CategoryCard({ category, fnColor }: Props) {
                   <span className="text-xs font-mono text-slate-400 w-20 flex-shrink-0">
                     {sub.code}
                   </span>
-
                   <p className="flex-1 text-xs text-slate-300 line-clamp-1 min-w-0">
                     {sub.description?.split('\n')[0]}
                   </p>
-
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    {sub.isBelowTarget && (
-                      <span className="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded-full">
-                        Below Target
-                      </span>
-                    )}
                     <span
                       className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${TIER_BG_CLASSES[key]}`}
                       style={{ color: TIER_COLORS[key] }}
