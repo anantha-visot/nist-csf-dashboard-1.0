@@ -1,10 +1,26 @@
+import { useState, useEffect } from 'react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import { InteractionStatus } from '@azure/msal-browser';
+import { InteractionStatus, EventType } from '@azure/msal-browser';
 import { loginRequest, ALLOWED_DOMAINS } from './msalConfig';
 
 export function useAuth() {
   const { instance, accounts, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+  const [authError, setAuthError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const id = instance.addEventCallback((event) => {
+      if (event.eventType === EventType.LOGIN_FAILURE) {
+        const msg = (event.error as Error)?.message ?? 'Sign-in failed. Please try again.';
+        console.error('[MSAL] LOGIN_FAILURE', event.error);
+        setAuthError(msg);
+      }
+      if (event.eventType === EventType.LOGIN_SUCCESS) {
+        setAuthError(null);
+      }
+    });
+    return () => { if (id) instance.removeEventCallback(id); };
+  }, [instance]);
 
   const account = accounts[0] ?? null;
   const email = account?.username ?? '';
@@ -13,6 +29,7 @@ export function useAuth() {
   const isDomainAllowed = ALLOWED_DOMAINS.includes(domain);
 
   const signIn = () => {
+    setAuthError(null);
     instance.loginRedirect(loginRequest);
   };
 
@@ -32,6 +49,7 @@ export function useAuth() {
     name,
     domain,
     isDomainAllowed,
+    authError,
     signIn,
     signOut,
   };
