@@ -95,10 +95,10 @@ export default function LoginPage({ unauthorizedEmail }: Props) {
                 </span>
               </div>
               <div className="space-y-2">
-                {['precision-cyber.com', 'ansamcal.com (coming soon)'].map((d) => (
+                {['precision-cyber.com', 'ansamcal.com'].map((d) => (
                   <div key={d} className="flex items-center gap-2">
-                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${d.includes('coming soon') ? 'bg-slate-600' : 'bg-emerald-500'}`} />
-                    <span className={`text-xs font-mono ${d.includes('coming soon') ? 'text-slate-600' : 'text-slate-300'}`}>{d}</span>
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-emerald-500" />
+                    <span className="text-xs font-mono text-slate-300">{d}</span>
                   </div>
                 ))}
               </div>
