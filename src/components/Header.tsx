@@ -1,5 +1,6 @@
 import { Shield } from 'lucide-react';
 import UserMenu from './UserMenu';
+import AnsamcalLogo from './logos/AnsamcalLogo';
 
 export default function Header() {
   return (
@@ -12,6 +13,11 @@ export default function Header() {
           <h1 className="text-lg font-semibold text-white leading-tight">
             NIST CSF Implementation Tier Dashboard
           </h1>
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <div className="bg-white rounded-xl px-4 py-1.5 flex items-center">
+            <AnsamcalLogo className="h-9 w-auto" />
+          </div>
         </div>
         <UserMenu />
       </div>
